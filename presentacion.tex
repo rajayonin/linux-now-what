@@ -1,0 +1,64 @@
+\documentclass[aspectratio=43]{beamer}
+
+\usetheme{simple}
+
+\usepackage{lmodern}
+\usepackage[scale=2]{ccicons}
+
+\usepackage[utf8]{inputenc} % No olvides utilizar UTF8, especialmente si tu presentación está en castellano
+
+\def\edicion{ % Cambiar para las siguientes jornadas
+XXXV
+}
+\def\fecha{ % Cambiar para las siguientes jornadas
+Abril 2023
+}
+
+\title{Te has instalado Linux, ahora... ¿qué?} % Modifica el título de la presentación a tu gusto
+\author{Luis Daniel Casais Mezquida} % Cambia el autor de la presentación.
+\github{\href{http://www.github.com/rajayonin}{@rajayonin}} % Pon tu Twitter o déjalo en blanco
+\institute{\edicion Jornadas Técnicas del GUL} % Esto no lo cambies
+\date{\fecha} % Esto tampoco
+
+\titlegraphic{img/logo1.png}
+
+\begin{document}
+
+{
+    \setbeamertemplate{footline}{}
+    \begin{frame}
+        \titlepage
+    \end{frame}
+}
+\addtocounter{framenumber}{-1}
+
+%\setwatermark{\includegraphics[height=8cm]{img/logo1.png}}
+
+% ------------------------------------------------------------------------------------------
+% La presentación empieza aquí. La primera diapositiva puede dejarse tal cual o sustituirse.
+% ------------------------------------------------------------------------------------------
+
+\begin{frame}
+    \frametitle{Tabla de contenidos} % Puedes ponerle un título más chulo a la diapositiva con el índice de contenidos o dejar éste
+    \tableofcontents % Para poblar la tabla de contenidos debes utilizar /section y /subsection apropiadamente (ver demo)
+\end{frame}
+
+% Contraseñas no se muestran en pantalla
+% Shell script
+% Desktop managers
+% Ssh
+% Lutris, heroic games, steam, wine, flatpak/nix, nala (pa debian) 
+% Exa, bat
+% pipes, &&, &, nohup, Ctrl-z, fg
+% Bashrc / dotfiles en general
+% Zsh, fish, kitty, terminator
+% Man, --help
+
+
+\begin{frame}
+    \frametitle{}
+
+\end{frame}
+
+
+\end{document}
