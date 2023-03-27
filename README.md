@@ -1,6 +1,6 @@
 # Te has instalado Linux, ahora... ¿qué?
 Por Luis Daniel Casais Mezquida  
-XXXV Jornadas Técnicas del GUL
+XXXV Jornadas Técnicas del GUL  
 [Grupo de Usuarios de Linux](https://gul.uc3m.es)  
 Universidad Carlos III de Madrid
 
