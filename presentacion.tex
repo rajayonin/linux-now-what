@@ -5,20 +5,19 @@
 \usepackage{lmodern}
 \usepackage[scale=2]{ccicons}
 
-\usepackage[utf8]{inputenc} % No olvides utilizar UTF8, especialmente si tu presentación está en castellano
+\usepackage[utf8]{inputenc}
 
-\def\edicion{ % Cambiar para las siguientes jornadas
-XXXV
-}
-\def\fecha{ % Cambiar para las siguientes jornadas
-Abril 2023
-}
 
-\title{Te has instalado Linux, ahora... ¿qué?} % Modifica el título de la presentación a tu gusto
-\author{Luis Daniel Casais Mezquida} % Cambia el autor de la presentación.
-\github{rajayonin} % Pon tu GitHub o déjalo en blanco
-\institute{\edicion Jornadas Técnicas del GUL} % Esto no lo cambies
-\date{\fecha} % Esto tampoco
+\def\edicion{XXXV}
+\def\fecha{Abril 2023 }
+
+\title{Te has instalado Linux, ahora... ¿qué?} % Título de la presentación
+\author{Luis Daniel Casais Mezquida} % autor de la presentación.
+\github{rajayonin} % GitHub
+
+\institute{\edicion \ Jornadas Técnicas del GUL}
+\date{\fecha}
+
 
 \titlegraphic{img/logo1.png}
 
@@ -32,27 +31,32 @@ Abril 2023
 }
 \addtocounter{framenumber}{-1}
 
-%\setwatermark{\includegraphics[height=8cm]{img/logo1.png}}
 
-% ------------------------------------------------------------------------------------------
-% La presentación empieza aquí. La primera diapositiva puede dejarse tal cual o sustituirse.
-% ------------------------------------------------------------------------------------------
+% -----------------------------
+% La presentación empieza aquí.
+% -----------------------------
 
 \begin{frame}
-    \frametitle{Tabla de contenidos} % Puedes ponerle un título más chulo a la diapositiva con el índice de contenidos o dejar éste
-    \tableofcontents % Para poblar la tabla de contenidos debes utilizar /section y /subsection apropiadamente (ver demo)
+    \frametitle{Tabla de contenidos}
+    \tableofcontents
 \end{frame}
 
 % Contraseñas no se muestran en pantalla
-% Shell script
-% Desktop managers
-% Ssh
-% Lutris, heroic games, steam, wine, flatpak/nix, nala (pa debian) 
-% Exa, bat
-% pipes, &&, &, nohup, Ctrl-z, fg
-% Bashrc / dotfiles en general
-% Zsh, fish, kitty, terminator
-% Man, --help
+% Desktop managers / tiling window managers (i3)
+% LSW ("Linux Subsystem for Windows): Lutris, heroic games, steam, wine
+% SSH
+% Más gestores de paquetes: flatpak/nix, nala (pa debian) 
+% Emuladores de terminal: kitty (bonito y simple, usa GPU), terminator (GUI friendly), alarcritty (moderno, usa GPU), iterm2 // tmux
+% Shell scripts
+% Funcionalidades de shell: pipes, &&, &, nohup, Ctrl-z, fg
+% Comandos: find, who, top (htop) / ps, ping, traceroute, ipconfig, lscpu, grep, wget, echo, zip/unzip/tar, chmod, touch, cat, less, head, tail, sort, comm (diff/cmp), sed, history, sudo, df, service, kill/kilall, whereis, mount, fdisk/gparted
+% Editores de texto en terminal: nano/pico, vim/nvim (lazyvim), emacs
+% Reemplazos de comandos: exa, bat
+% Ficheros de configuración: /etc/hosts
+% Dotfiles: .bashrc, etc
+% Configurar terminal: aliases
+% Shells: zsh, fish
+% Aiuda: man, --help, whatis
 
 
 \begin{frame}
