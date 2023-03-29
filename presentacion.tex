@@ -9,10 +9,10 @@
 
 
 \def\edicion{XXXV}
-\def\fecha{Abril 2023 }
+\def\fecha{Abril 2023}
 
-\title{Te has instalado Linux, ahora... ¿qué?} % Título de la presentación
-\author{Luis Daniel Casais Mezquida} % autor de la presentación.
+\title{Te has instalado Linux, ahora... ¿qué?} % título de la presentación
+\author{Luis Daniel Casais Mezquida} % autor de la presentación
 \github{rajayonin} % GitHub
 
 \institute{\edicion \ Jornadas Técnicas del GUL}
@@ -20,6 +20,12 @@
 
 
 \titlegraphic{img/logo1.png}
+
+
+% -----------------------------
+% La presentación empieza aquí.
+% -----------------------------
+
 
 \begin{document}
 
@@ -32,36 +38,91 @@
 \addtocounter{framenumber}{-1}
 
 
-% -----------------------------
-% La presentación empieza aquí.
-% -----------------------------
-
 \begin{frame}
     \frametitle{Tabla de contenidos}
     \tableofcontents
 \end{frame}
 
-% Contraseñas no se muestran en pantalla
-% Desktop managers / tiling window managers (i3)
-% LSW ("Linux Subsystem for Windows): Lutris, heroic games, steam, wine
-% SSH
-% Más gestores de paquetes: flatpak/nix, nala (pa debian) 
+
+\section{Personalización}
+% Desktop Enviroments / tiling window managers (i3) / tty
 % Emuladores de terminal: kitty (bonito y simple, usa GPU), terminator (GUI friendly), alarcritty (moderno, usa GPU), iterm2 // tmux
+% Dotfiles: .bashrc, etc
+% Shells: bash, zsh, fish
+
+\subsection{Graphical User Interface}
+
+\begin{frame}
+    \frametitle{GUI (Graphical User Interface)}
+    Por defecto, Linux cuenta con tres tipos principales de GUI: \textbf{Lockscreen} (pantalla de bloqueo), \textbf{Desktop Enviroment}, y \textbf{TTY/shell}.\newline
+
+    Se puede acceder a cualquiera de ellos con las siguientes combinaciones de teclas:
+    \begin{itemize}
+        \item \texttt{CTRL + ALT + F1}: Lockscreen
+        \item \texttt{CTRL + ALT + F2}: Desktop Environment
+        \item \texttt{CTRL + ALT + F3}: TTY3
+        \item \texttt{CTRL + ALT + F4}: TTY4\\
+        ...\newline
+    \end{itemize}
+    
+    Cualquiera de los tres tipos son personalizables e intercambiables.
+\end{frame}
+
+\subsection{Desktop Enviroment}
+\begin{frame}
+    \frametitle{Desktop Enviroment}
+
+\end{frame}
+
+\subsection{Tiling Window Managers}
+\begin{frame}
+    \frametitle{Tiling Window Managers}
+    
+\end{frame}
+
+\section{Shell}
+% Contraseñas no se muestran en pantalla, Ctrl-L, Ctrl-C, Ctrl-Shift-C, Ctrl-Shift-V
+% Funcionalidades de shell: |, >>, >, &&, &, nohup, Ctrl-z, fg
 % Shell scripts
-% Funcionalidades de shell: pipes, &&, &, nohup, Ctrl-z, fg
-% Comandos: find, who, top (htop) / ps, ping, traceroute, ipconfig, lscpu, grep, wget, echo, zip/unzip/tar, chmod, touch, cat, less, head, tail, sort, comm (diff/cmp), sed, history, sudo, df, service, kill/kilall, whereis, mount, fdisk/gparted
+% Comandos: find, who, top (htop) / ps, ping, traceroute, ipconfig, lscpu, grep, wget, echo, zip/unzip/tar, chmod, touch, cat, xxd, less, head, tail, sort, comm (diff/cmp), sed, history, sudo, df, service, kill/kilall, whereis, mount, fdisk/gparted (https://www.youtube.com/watch?v=s3ii48qYBxA, https://www.youtube.com/watch?v=PeCBpI1hT2Q&t=19s)
+% Comandos coña: cowsays, fortune, sl, cmatrix, lolcat, fortune | cowsay -f tux | lolcat (https://www.youtube.com/watch?v=iAdpkqLD4f0)
 % Editores de texto en terminal: nano/pico, vim/nvim (lazyvim), emacs
 % Reemplazos de comandos: exa, bat
-% Ficheros de configuración: /etc/hosts
-% Dotfiles: .bashrc, etc
 % Configurar terminal: aliases
-% Shells: zsh, fish
+
+\begin{frame}
+    \frametitle{}
+    
+\end{frame}
+
+
+\section{Más paquetes}
+% Más gestores de paquetes: flatpak, snapd (malo), nix, nala (pa debian) 
+% LSW ("Linux Subsystem for Windows"): wine, Lutris, heroic games, steam (proton)
+
+\begin{frame}
+    \frametitle{}
+    
+\end{frame}
+
+
+\section{Configuración y ayuda}
+% Ficheros de configuración: /etc/hosts
 % Aiuda: man, --help, whatis
+
+\begin{frame}
+    \frametitle{}
+    
+\end{frame}
+
+
+\section{Acceso remoto}
+% ssh, scp
 
 
 \begin{frame}
     \frametitle{}
-
+    
 \end{frame}
 
 
