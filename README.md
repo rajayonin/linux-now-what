@@ -1,11 +1,11 @@
-# Te has instalado Linux, ahora... ¿qué?
+# Te has instalado Linux... ahora, ¿qué?
 Por Luis Daniel Casais Mezquida  
 XXXV Jornadas Técnicas del GUL  
 [Grupo de Usuarios de Linux](https://gul.uc3m.es)  
 Universidad Carlos III de Madrid
 
 
-Material para la charla "Te has instalado Linux, ahora... ¿qué?" de las XXXV Jornadas Técnicas del GUL.
+Material para la charla "Te has instalado Linux... ahora, ¿qué?" de las [XXXV Jornadas Técnicas del GUL](https://gul.uc3m.es/jornadas).
 
 
 ## Compilación
