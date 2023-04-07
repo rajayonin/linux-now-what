@@ -13,5 +13,6 @@
 *.snm
 *.toc
 *.pdf
+*.vrb
 
 demo*

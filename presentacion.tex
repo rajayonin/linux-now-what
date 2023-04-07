@@ -4,10 +4,13 @@
 
 \usepackage{lmodern}
 \usepackage[scale=2]{ccicons}
+\usepackage{multicol}
 
 \usepackage[utf8]{inputenc}
 
 
+
+% Info de la presentación
 \def\edicion{XXXV}
 \def\fecha{Abril 2023}
 
@@ -19,14 +22,9 @@
 \date{\fecha}
 
 
+
+% Cover
 \titlegraphic{img/logo1.png}
-
-
-% -----------------------------
-% La presentación empieza aquí.
-% -----------------------------
-
-
 \begin{document}
 
 {
@@ -38,10 +36,19 @@
 \addtocounter{framenumber}{-1}
 
 
+% Table of contents
 \begin{frame}
     \frametitle{Tabla de contenidos}
-    \tableofcontents
+    \begin{multicols}{2}
+        \tableofcontents
+    \end{multicols}
 \end{frame}
+
+
+
+% -----------------------------
+% La presentación empieza aquí.
+% -----------------------------
 
 
 \section{Personalización}
@@ -188,10 +195,10 @@
 \end{frame}
 
 
-\section{La shell}
+\section{La terminal}
 % Sintaxis: flags, parámetros, y argumentos
-% Contraseñas no se muestran en pantalla, Ctrl-L, Ctrl-C, Ctrl-Shift-C, Ctrl-Shift-V
-% Funcionalidades de shell: |, >>, >, &&, &, nohup, Ctrl-z, fg
+% Contraseñas no se muestran en pantalla, Ctrl-L, Ctrl-C, Ctrl-D, Ctrl-Shift-C, Ctrl-Shift-V
+% Funcionalidades de shell: |, >>, >, <, &&, &, nohup, Ctrl-z, fg
 % Shell scripts
 % Comandos (https://www.youtube.com/watch?v=s3ii48qYBxA, https://www.youtube.com/watch?v=PeCBpI1hT2Q&t=19s): 
 % - Basic: ls, mv, cp, rm, cd, mkdir
@@ -207,7 +214,103 @@
 % Configurar terminal: aliases, PS1 (prompt)
 
 \begin{frame}
-    \frametitle{}
+    \frametitle{La terminal}
+    La principal funcionalidad de la shell/TTY/terminal es ejecutar programas.\\
+    Los programas más genéricos y usados para interactuar con el SO se suelen llamar "comandos".\newline
+
+    Por defecto busca los programas en \texttt{/usr/bin/}, pero también puedes especificar el archivo con su \textit{path} (recuerda que el archivo tiene que ser ejecutable).
+
+\end{frame}
+
+
+\begin{frame}[fragile]  % [fragile] needed for verbatim
+    \frametitle{Sintaxis general}
+
+    La sintaxis general de cualquier comando es:\\
+
+    \begin{block}{}  % verbatim doesn't respect tabulation
+        \begin{verbatim}
+<command> [-<f><g>] [--<flag>] [<parameter>] [<argument>]
+        \end{verbatim}
+    \end{block}
+
+    \begin{itemize}
+        \item \textbf{Flags:} Son opciones del comando. Dependiendo de la opción pueden implicar la presencia de un parámetro. Pueden ser escritas con una letra (\texttt{-<f>}) o una palabra (\texttt{--<flag>}), normalmente equivalentes (e.g: \texttt{-h} y \texttt{--help}).
+        \item \textbf{Parámetros:} Expanden las opciones del comando.
+        \item \textbf{Argumentos:} Los \textit{inputs} del comando. Suelen ser archivos.
+    \end{itemize}
+    
+    E.g.: \texttt{tar -rvf ../stuff.tar --exclude-from exclude\_file .}
+
+\end{frame}
+
+
+\subsection{Funcionalidades de la terminal}
+
+\begin{frame}
+    \frametitle{Funcionalidades de la terminal (I)}
+    La shell también trae una serie de funcionalidades extra:
+
+    \begin{itemize}
+        \item \textbf{Concatenaciones:} Sirven para concatenar comandos:\\
+        \texttt{<comm1> <cc> <comm2>}\\
+        \begin{itemize}
+            \item \texttt{;} ejecuta \textbf{siempre} el segundo comando cuando termina el primero.
+            \item \texttt{\&\&} ejecuta el segundo comando sólo \textbf{si el primero ha funcionado} (retorna \texttt{0}).
+            \item \texttt{||} ejecuta el segundo sólo \textbf{si el primero ha fallado}.
+        \end{itemize}
+        % E.g.: \texttt{sudo apt update \&\& apt upgrade}
+        \item \textbf{Pipes:} Conectan la salida de un comando (\texttt{stdout}) a la entrada (\texttt{stdin}) del siguiente comando. Útil para enlazar comandos: \texttt{<comm1> | <comm2>}\\
+        % Mítico ejemplo, buscar algo en un directorio: \texttt{ls | grep "algo"}.
+        \item \textbf{Redirecciones:} Redirigen la entrada ó salida de un comando a un archivo: \texttt{<comm> <rr> <file>}.
+        \begin{itemize}
+            \item \texttt{>} redirige la salida de un comando a un archivo (sobreescribe).
+            \item \texttt{>>} concatena la salida de un comando a un archivo (no sobreescribe).
+            \item \texttt{<} redirige los contenidos de un archivo a la entrada del comando.
+        \end{itemize} 
+        % E.g.: \texttt{cat a >> b}
+
+    \end{itemize}
+
+\end{frame}
+
+\begin{frame}
+    \frametitle{Funcionalidades de la terminal (II)}
+
+    \begin{itemize}
+        \item \textbf{Sudo:} Ejecuta el siguiente comando como \textit{root}: \texttt{sudo <comm>}.
+        \item \textbf{Contraseñas:} No se muestra \textit{nada} en pantalla (se puede cambiar en \texttt{/etc/sudoers} \footnote{\href{https://www.howtogeek.com/194010/how-to-make-password-asterisks-visible-in-the-terminal-window-in-linux/}{Más info aquí.}}). 
+        \item \textbf{Copiar y pegar:} Se usan \texttt{Ctrl-Shift-C} y \texttt{Ctrl-Shift-V}.
+        \item \textbf{Cancelar comandos:} Cancela el comando que estás ejecutando actualmente con \texttt{Ctrl-C}.
+        \item \textbf{Cerrar sesión:} Cierra la sesión de terminal actual con \texttt{Ctrl-D} (útil para SSH).
+        \item \textbf{Limpiar pantalla:} Limpia la pantalla con \texttt{Ctrl-L}, ó \texttt{clear}.
+        \item \textbf{Borrar línea:} Borra todo el comando que estás escribiendo con \texttt{Ctrl-U}.
+        \item \textbf{Autocompletado:} Con el \texttt{Tab}. Si hay más de una opción posible, tienes que darle dos veces.
+    \end{itemize}
+
+\end{frame}
+
+\begin{frame}
+    \frametitle{Funcionalidades de la terminal (III)}
+    
+    \begin{itemize}
+        \item \textbf{Procesos en background:} 
+        \item \textbf{Flechitas:} 
+        \item \textbf{Repeat command:} !!, !-3
+    \end{itemize}
+
+\end{frame}
+
+
+\subsection{Comandos}
+
+
+
+\section{Permisos}
+% rwx, chmod, etc.
+
+\begin{frame}
+    \frametitle{Permisos}
     
 \end{frame}
 
@@ -217,7 +320,7 @@
 % LSW ("Linux Subsystem for Windows"): wine, Lutris, heroic games, steam (proton)
 
 \begin{frame}
-    \frametitle{}
+    \frametitle{Más paquetes}
     
 \end{frame}
 
@@ -227,17 +330,17 @@
 % Aiuda: man, --help, whatis
 
 \begin{frame}
-    \frametitle{}
+    \frametitle{Configuración y ayuda}
     
 \end{frame}
 
 
-\section{Acceso remoto}
+\section{SSH (Secure Shell Hashing)}
 % ssh, scp
 
 
 \begin{frame}
-    \frametitle{}
+    \frametitle{SSH (Secure Shell Hashing)}
     
 \end{frame}
 
@@ -247,17 +350,37 @@
 % rclone: https://www.howtogeek.com/451262/how-to-use-rclone-to-back-up-to-google-drive-on-linux/
 
 \begin{frame}
-    \frametitle{}
+    \frametitle{Backups: rclone}
     
 \end{frame}
 
 
-\section{Ruegos y preguntas}
 
 \begin{frame}
     \frametitle{¿Preguntas, reclamos, improperios?}
     \centering
     \includegraphics[width=0.9\textwidth]{img/noot.png}
+\end{frame}
+
+
+
+\begin{frame}
+    \frametitle{Más información}
+
+    \begin{itemize}
+        \item \href{https://itsfoss.com/}{It's FOSS}
+        \item \href{https://wiki.archlinux.org/}{Arch Wiki}
+        \item \href{https://stackoverflow.com/}{Stack Overflow} y \href{https://stackoverflow.com/}{Stack Exchange}
+        \item \href{https://www.tutorialspoint.com/unix/index.htm}{Tutorialspoint — Linux for Beginners}
+        \item \href{https://github.com/acaldero/uc3m_linux}{A. Calderón — Introducción a Unix/Linux}
+        \item \href{https://aprendolinux.com}{J. Pons — aprendolinux}
+        \item \href{https://github.com/rajayonin/cheatsheets/blob/main/vim_cheatsheet.md}{L. Casais — rajayonin's Vim cheatsheet}
+        \item \href{https://youtu.be/2qZBUa93MQ8}{GUL — Linux en 90' para no desesperarse en las prácticas}
+        \item \href{https://cloud-gul.uc3m.es/s/4qXKozr7DmDSZiN}{GUL — Linux 404: Introducción a GNU/Linux}
+        \item \href{https://github.com/guluc3m/linux404/blob/main/README.md}{GUL — Formas de instalarse Linux}
+        \item \href{mailto:info@gul.uc3m.es}{info@gul.uc3m.es} | \href{https://twitter.com/guluc3m}{@guluc3m}
+    \end{itemize}
+
 \end{frame}
 
 
