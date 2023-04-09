@@ -127,7 +127,7 @@
 \subsection{Emuladores de terminal}
 \begin{frame}
     \frametitle{Emuladores de terminal}
-    Permiten interactuar con la terminal real, y añaden muchas funcionalidades (copiar y pegar, múltiples terminales...).\newline
+    Permiten interactuar con la terminal real, y añaden muchas funcionalidades (copiar y pegar, múltiples terminales...), aparte de personalizar cosas como colores, fuentes...\newline
     
     % images
     \begin{columns}[c]
@@ -169,7 +169,7 @@
             \begin{figure}
                 \centering
                 \includegraphics[width=0.9\textwidth]{img/powerlevel10k.png}
-                \caption{\href{https://www.zsh.org/}{Z-Shell }\href{https://github.com/romkatv/powerlevel10k}{(with powerlevel10k)}}
+                \caption{\href{https://www.zsh.org/}{Z-Shell }\href{https://github.com/romkatv/powerlevel10k}{(con powerlevel10k)}}
             \end{figure}
         \end{column}
     \end{columns}
@@ -196,21 +196,22 @@
 
 
 \section{La terminal}
-% Sintaxis: flags, parámetros, y argumentos
-% Contraseñas no se muestran en pantalla, Ctrl-L, Ctrl-C, Ctrl-D, Ctrl-Shift-C, Ctrl-Shift-V
-% Funcionalidades de shell: |, >>, >, <, &&, &, nohup, Ctrl-z, fg
+% Sintaxis: flags, parámetros, y argumentos, prompt
+% Funcionalidades de shell: |, >>, >, <, &&, contraseñas no se muestran en pantalla, Ctrl-L, Ctrl-C, Ctrl-D, Ctrl-Shift-C, Ctrl-Shift-V, Ctrl-R
+% Gestión de procesos: nohup, &, Ctrl-z, fg, at
 % Shell scripts
 % Comandos (https://www.youtube.com/watch?v=s3ii48qYBxA, https://www.youtube.com/watch?v=PeCBpI1hT2Q&t=19s): 
 % - Basic: ls, mv, cp, rm, cd, mkdir
-% - Coreutils (https://www.maizure.org/projects/decoded-gnu-coreutils/): find/whereis, who, grep, echo, chmod, touch, cat, xxd, history, sudo, df, script
-%   - Work w/ files: less, head, tail, sort, comm (diff/cmp), sed/awk, wc, cut, expand/unexpand, tee, jq, yq, xmlint
-% - Processes: top (htop) / ps, lscpu,service, kill/kilall
-% - Network: ping, traceroute, ipconfig, wget
+% - Coreutils (https://www.maizure.org/projects/decoded-gnu-coreutils/): find, which/whereis, who, grep, echo, history, sudo, df/du, script, checksum
+%   - Work w/ files: touch, cat, xxd, less, head, tail, sort, uniq, diff/comm, cmp, sed/awk, wc, cut, expand/unexpand, jq, yq, xmlint
+% - Processes: top / ps, service, kill/kilall
+% - Sesión: shutdown, reboot, logout
+% - Network: ping, traceroute, ifconfig, wget, curl
 % - File system: mount, fdisk/gparted, zip/unzip/tar
-% - Other: lscpu, neofetch
-% - Coña: cowsays, fortune, sl, cmatrix, lolcat, fortune | cowsay -f tux | lolcat (https://www.youtube.com/watch?v=iAdpkqLD4f0)
+% - Other: lscpu, neofetch, tmux
+% - Coña: cowsay, fortune, sl, cmatrix, lolcat, fortune | cowsay -f tux | lolcat (https://www.youtube.com/watch?v=iAdpkqLD4f0)
 % Editores de texto en terminal: nano/micro, vim/nvim (lazyvim), emacs
-% Reemplazos de comandos: exa, bat
+% Reemplazos de comandos: trash, locate, htop, exa, bat
 % Configurar terminal: aliases, PS1 (prompt)
 
 \begin{frame}
@@ -218,7 +219,9 @@
     La principal funcionalidad de la shell/TTY/terminal es ejecutar programas.\\
     Los programas más genéricos y usados para interactuar con el SO se suelen llamar "comandos".\newline
 
-    Por defecto busca los programas en \texttt{/usr/bin/}, pero también puedes especificar el archivo con su \textit{path} (recuerda que el archivo tiene que ser ejecutable).
+    Por defecto busca los programas en \texttt{/usr/bin/}, pero también puedes especificar el archivo con su \textit{path} (recuerda que el archivo tiene que ser ejecutable).\newline
+
+    Suele consistir de un \textit{prompt}, que indica el estado, y un cursor para escribir los comandos (ejecutados con el \texttt{Enter}). El prompt suele tener el formato \texttt{<user>@<host>:<cwd><\$ || \#>}, consistente del nombre del usuario, el nombre de la máquina (\textit{host}), el directorio actual (\textit{Current Working Directory}), y un caracter indicando el modo: \texttt{\$} para usuario y \texttt{\#} para superusuario.
 
 \end{frame}
 
@@ -230,12 +233,12 @@
 
     \begin{block}{}  % verbatim doesn't respect tabulation
         \begin{verbatim}
-<command> [-<f><g>] [--<flag>] [<parameter>] [<argument>]
+<cmd> [-<f>] [--<flag>] [<parameter>] [<argument>]
         \end{verbatim}
     \end{block}
 
     \begin{itemize}
-        \item \textbf{Flags:} Son opciones del comando. Dependiendo de la opción pueden implicar la presencia de un parámetro. Pueden ser escritas con una letra (\texttt{-<f>}) o una palabra (\texttt{--<flag>}), normalmente equivalentes (e.g: \texttt{-h} y \texttt{--help}).
+        \item \textbf{Flags:} Son opciones del comando. Dependiendo de la opción pueden implicar la presencia de un parámetro. Pueden ser escritas con una letra (\texttt{-<f>}) o una palabra (\texttt{--<flag>}), normalmente equivalentes (e.g: \texttt{-h} y \texttt{--help}). Normalmente puedes juntar varios flags de una letra: \texttt{-<f><g><h>}.
         \item \textbf{Parámetros:} Expanden las opciones del comando.
         \item \textbf{Argumentos:} Los \textit{inputs} del comando. Suelen ser archivos.
     \end{itemize}
@@ -253,16 +256,16 @@
 
     \begin{itemize}
         \item \textbf{Concatenaciones:} Sirven para concatenar comandos:\\
-        \texttt{<comm1> <cc> <comm2>}\\
+        \texttt{<cmd1> <cc> <cmd2>}\\
         \begin{itemize}
             \item \texttt{;} ejecuta \textbf{siempre} el segundo comando cuando termina el primero.
             \item \texttt{\&\&} ejecuta el segundo comando sólo \textbf{si el primero ha funcionado} (retorna \texttt{0}).
             \item \texttt{||} ejecuta el segundo sólo \textbf{si el primero ha fallado}.
         \end{itemize}
         % E.g.: \texttt{sudo apt update \&\& apt upgrade}
-        \item \textbf{Pipes:} Conectan la salida de un comando (\texttt{stdout}) a la entrada (\texttt{stdin}) del siguiente comando. Útil para enlazar comandos: \texttt{<comm1> | <comm2>}\\
+        \item \textbf{Pipes:} Conectan la salida de un comando (\texttt{stdout}) a la entrada (\texttt{stdin}) del siguiente comando. Útil para enlazar comandos: \texttt{<cmd1> | <cmd2>}\\
         % Mítico ejemplo, buscar algo en un directorio: \texttt{ls | grep "algo"}.
-        \item \textbf{Redirecciones:} Redirigen la entrada ó salida de un comando a un archivo: \texttt{<comm> <rr> <file>}.
+        \item \textbf{Redirecciones:} Redirigen la entrada ó salida de un comando a un archivo: \texttt{<cmd> <rr> <file>}.
         \begin{itemize}
             \item \texttt{>} redirige la salida de un comando a un archivo (sobreescribe).
             \item \texttt{>>} concatena la salida de un comando a un archivo (no sobreescribe).
@@ -278,14 +281,14 @@
     \frametitle{Funcionalidades de la terminal (II)}
 
     \begin{itemize}
-        \item \textbf{Sudo:} Ejecuta el siguiente comando como \textit{root}: \texttt{sudo <comm>}.
-        \item \textbf{Contraseñas:} No se muestra \textit{nada} en pantalla (se puede cambiar en \texttt{/etc/sudoers} \footnote{\href{https://www.howtogeek.com/194010/how-to-make-password-asterisks-visible-in-the-terminal-window-in-linux/}{Más info aquí.}}). 
+        \item \textbf{Sudo:} Ejecuta el siguiente comando como \textit{root}: \texttt{sudo <cmd>}.
+        \item \textbf{Contraseñas:} No se muestra \textit{nada} en pantalla (se puede cambiar en \texttt{/etc/sudoers} \footnote{Más info en \href{https://www.howtogeek.com/194010/how-to-make-password-asterisks-visible-in-the-terminal-window-in-linux/}{howtogeek.com/194010}.}). 
         \item \textbf{Copiar y pegar:} Se usan \texttt{Ctrl-Shift-C} y \texttt{Ctrl-Shift-V}.
         \item \textbf{Cancelar comandos:} Cancela el comando que estás ejecutando actualmente con \texttt{Ctrl-C}.
         \item \textbf{Cerrar sesión:} Cierra la sesión de terminal actual con \texttt{Ctrl-D} (útil para SSH).
         \item \textbf{Limpiar pantalla:} Limpia la pantalla con \texttt{Ctrl-L}, ó \texttt{clear}.
         \item \textbf{Borrar línea:} Borra todo el comando que estás escribiendo con \texttt{Ctrl-U}.
-        \item \textbf{Autocompletado:} Con el \texttt{Tab}. Si hay más de una opción posible, tienes que darle dos veces.
+        \item \textbf{Autocompletado:} Con el \texttt{Tab}. Si hay más de una opción posible, (normalmente, depende de la shell) tienes que darle dos veces.
     \end{itemize}
 
 \end{frame}
@@ -293,10 +296,53 @@
 \begin{frame}
     \frametitle{Funcionalidades de la terminal (III)}
     
+    La mayoría de shells cuentan con un historial de comandos, normalmente guardado en \texttt{/home/<user>/.<shell>\_history} (eg. \texttt{.bash\_history}). Viene con un tamaño máximo definido en la configuración de la shell, y se guarda entre sesiones del mismo usuario.
     \begin{itemize}
-        \item \textbf{Procesos en background:} 
-        \item \textbf{Flechitas:} 
-        \item \textbf{Repeat command:} !!, !-3
+        \item Puedes navegar el historial con las flechas del teclado (arriba y abajo).
+        \item Con \texttt{Ctrl-R} puedes hacer una búsqueda dentro historial. Sigue pulsando \texttt{Ctrl-R} para seguir buscando hacia atrás, y pulsa \texttt{Esc} para salir.
+        \item Puedes repetir el último comando con \texttt{!!} y el comando \textit{n} veces anterior con \texttt{!-<n>}.
+    \end{itemize}
+
+\end{frame}
+
+
+\subsection{Gestión de procesos}
+
+\begin{frame}
+    \frametitle{Gestión de procesos}
+    
+    Los procesos en Linux pueden estar en ejecutándose en \textit{foreground}, bloqueando la terminal actual, en \textit{background}, sin bloquearla \footnote{Un proceso en \textit{background} sigue pudiendo sacar mensajes por pantalla y, aunque puedas seguir usando la terminal, se vuelve difícil (prueba \texttt{ping 8.8.8.8 \&}).}; o en suspensión, parado y quietecito.
+
+    \begin{itemize}
+        \item Puedes lanzar un proceso en \textit{background} con \texttt{<cmd> \&}. 
+        \item Para suspender un proceso ejecutándose en \textit{foreground}, usa \texttt{Ctrl-Z}.
+    \end{itemize}
+    
+    Ambos retornarán un número de proceso en background, e.g \texttt{[1]}.
+    
+    \begin{itemize}
+        \item Para traer al \textit{foreground} el proceso \textit{n} basta con usar \texttt{\%<n>}\footnote{Equivalente a \texttt{fg <n>}.}. Para el último proceso, basta con usar \texttt{\%}.
+        \item Para evitar que un proceso termine cuando se cierra la sesión, usa \texttt{nohup <cmd>} (recomendable usar junto con \texttt{\&}).
+        \item Puedes programar la ejecución de un comando (o shell script) con \texttt{at <time> <cmd>}.
+    \end{itemize}
+
+\end{frame}
+
+
+\subsection{Shell scripts}
+
+\begin{frame}
+    \frametitle{Shell scripts}
+    
+    Linux te permite crear \textit{scripts} para terminal, muy útiles para hacer tareas repetitivas, y en general para la automatización.\\
+    Cuentan con un "lenguaje de programación" propio, con variables, funciones, sentencias de control, y comentarios; aparte de todas las funcionalidades de la terminal.\newline
+
+    El "lenguaje" más usado es Bash Script.
+    \begin{itemize}
+        \item Se suelen guardar con la extensión \texttt{.sh} y en la primera línea se suele poner \texttt{\#!/bin/bash}.
+        \item Cada línea se trata como un comando y se ejecuta en la terminal actual.
+        \item Los comentarios usan \texttt{\#}.
+        \item Es recomendable ejecutarlos con \texttt{bash <script.sh>}, aunque se pueden ejecutar el archivo directamente (\texttt{<script.sh>}\footnote{Recuerda que hay que especificar el \textit{path} completo, eg. \texttt{./<script.sh>}.}).
     \end{itemize}
 
 \end{frame}
@@ -304,44 +350,335 @@
 
 \subsection{Comandos}
 
+\begin{frame}
+    \frametitle{Comandos: Básicos}
+    Los comandos básicos son:
+
+    \begin{itemize}
+        \item \texttt{ls}: Muestra los contenidos del directorio (\texttt{-lah} para mostrar toda la info).
+        \item \texttt{cd dir}: Moverse al directorio \texttt{dir}.
+        \item \texttt{mv origin destination}: Mover archivo \texttt{origin} al \textit{path} \texttt{destination} (\texttt{-r} para carpetas).
+        \item \texttt{cp origin destination}: Mover archivo \texttt{origin} al \textit{path} \texttt{destination} (\texttt{-r} para carpetas).
+        \item \texttt{rm file}: Eliminar el archivo \texttt{file} (\texttt{-r} para carpetas).
+        \item \texttt{mkdir dir}: Crea el directorio \texttt{dir}.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Comandos: Generales\footnote{Echadle un vistazo a las \href{https://www.maizure.org/projects/decoded-gnu-coreutils/}{\textit{coreutils}}.}}
+
+    \begin{itemize}
+        \item \texttt{who}: Muestra los usuarios \textit{loggeados} actualmente en el \textit{host}.
+        \item \texttt{echo <msg>}: Imprime texto por pantalla.
+        \item \texttt{find <dir> -iname <file>}: Busca archivos en un directorio (y subdirectorios).
+        \item \texttt{which <cmd>}\footnote{\texttt{whereis} da más información, pero es más lento.}: Busca el \textit{path} donde está guardado un ejecutable.
+        \item \texttt{script}: \textit{Loggea} la terminal y la guarda a un archivo (usa \texttt{exit} para parar.).
+        \item \texttt{df -h}\footnote{\texttt{du -h <dir>} hace lo mismo para un directorio específico.}: Muestra información del espacio usado en disco.
+        \item \texttt{cksum <file>}: Calcula el \textit{checksum} de un archivo.
+        \item \texttt{grep <str> <file>}: Busca patrones en archivos. También útil con \textit{pipes} para buscar en \textit{outputs} de comandos: \texttt{<cmd> | grep <str>}.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Comandos: Trabajando con archivos (I)}
+
+    \begin{itemize}
+        \item \texttt{touch <file>}: Crea un archivo vacío.
+        \item \texttt{cat <file>}: Imprime por pantalla los contenidos de un archivo.
+        \item \texttt{xxd <file>}: Muestra el archivo en hexadecimal.
+        \item \texttt{wc <file>}: Muestra el número de líneas, palabras, y bytes de un archivo.
+        \item \texttt{less <file>}: Visor de archivos con funcionalidades extra (mejor que \texttt{cat} para archivos grandes). Pulsa \texttt{q} para salir.
+        \item \texttt{head <file>}: Muestra las primeras líneas de un archivo (\texttt{head -n <n> <file>} para mostrar \textit{n} líneas).
+        \item \texttt{tail <file>}: Muestra las últimas líneas de un archivo (\texttt{tail -n <n> <file>} para mostrar \textit{n} líneas).
+        \item \texttt{sort <file>}: Ordena el archivo alfanuméricamente y lo saca por pantalla.
+        \item \texttt{uniq <file>}: Elimina las líneas repetidas de un archivo y lo saca por pantalla.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Comandos: Trabajando con archivos (II)}
+
+    \begin{itemize}
+        \item \texttt{tac <file>}\footnote{"tac" es "cat" al revés.}: Da la vuelta a un archivo (línea a línea) y lo saca por pantalla (\texttt{rev} para byte a byte).
+        \item \texttt{diff <file1> <file2>}\footnote{\texttt{comm} es similar pero más flexible.}: Muestra las diferencias entre dos archivos.
+        \item \texttt{cmp <file1> <file2>}: Compara dos archivos byte a byte.
+        \item \texttt{cut -c <n>- <file>}: Corta los \textit{n} primeros caracteres de cada línea (\texttt{-<n>} para los \textit{n} últimos).
+        \item \texttt{expand <file>}: Convierte \textit{tabs} a espacios.
+        \item \texttt{unexpand <file>}: Convierte espacios a \textit{tabs}.
+        \item \texttt{sed}/\texttt{awk}: Permiten editar archivos desde comandos. Muy poderosos (especialmente \texttt{awk}).
+        \item \texttt{jq}/\texttt{yq}/\texttt{xmlint}: Similares a \texttt{sed}, pero para formatos específicos: JSON, yaml, XML...
+    \end{itemize}
+\end{frame}
+
+
+\begin{frame}
+    \frametitle{Comandos: Procesos y sesiones}
+
+    \begin{itemize}
+        \item \texttt{ps}: Muestra los procesos activos.
+        \item \texttt{top}\footnote{El Administrador de tareas de terminal.}: Muestra información de procesos y recursos en tiempo real.
+        \item \texttt{service <service>\footnote{Los servicios son los scripts que están en \texttt{/etc/init.d}.} stop}: Para un servicio en ejecución. También puedes ver su estado (\texttt{status}) o reiniciarlo (\texttt{restart}).
+        \item \texttt{kill <pid>}: Mata a un proceso dado su PID (Process ID) (\texttt{-9} para forzar la muerte).
+        \item \texttt{killall <name>}: Mata todos los procesos asociados a un nombre.
+    \end{itemize}
+    \vspace{8pt}
+    \begin{itemize}
+        \item \texttt{shutdown now}: Apaga el ordenador.
+        \item \texttt{restart now}: Reinicia el ordenador.
+        \item \texttt{logout}: Cierra la sesión (equivalente a \texttt{Ctrl-D}).
+    \end{itemize}
+
+\end{frame}
+
+
+\begin{frame}
+    \frametitle{Comandos: Network}
+
+    \begin{itemize}
+        \item \texttt{ping <dir>}: Hace \textit{pings} contínuos a la dirección indicada\footnote{Puedes especificar la dirección IP (eg. \texttt{8.8.8.8}) o un \textit{hostname} (eg. \texttt{google.com}).}.
+        \item \texttt{traceroute <dir>}: Muestra la ruta hasta la dirección indicada.
+        \item \texttt{wget <dir>}: Obtiene los archivos de una dirección web (HTTP/HTTPS y FTP).
+        \item \texttt{curl}: Herramienta que permite enviar y recibir \textit{requests}, archivos, etc. Soporta muchos protocolos.
+        \item \texttt{ifconfig}: Muestra la configuración de red. Éste comando también permite modificar la configuración.
+    \end{itemize}
+
+\end{frame}
+
+\begin{frame}
+    \frametitle{Comandos: Sistema de ficheros}
+
+    \begin{itemize}
+        \item \texttt{lsblk}: Muestra los discos y particiones del sistema (\texttt{-f} para ver más info como el UUID).
+        \item \texttt{mount <partition>\footnote{Normalmente se encuentran en \texttt{/dev/}, eg. \texttt{/dev/sda}.} <path>}: Monta la partición en el directorio indicado\footnote{Para montar de forma permanente, hay que modificar \texttt{/etc/fstab}.}.
+        \item \texttt{umount <partition>}: Desmonta la partición. 
+        \item \texttt{fdisk}\footnote{Una alternativa gráfica es \texttt{gparted}.}: Utilidad para administrar las particiones del disco.
+    \end{itemize}
+
+\end{frame}
+
+\begin{frame}
+    \frametitle{Comandos: Archivos comprimidos}
+
+    \begin{itemize}
+        \item \texttt{zip <archive.zip> <files>}: Comprime los archivos. Usa \texttt{-r} para directorios, y \texttt{-x <files>} para excluir archivos.
+        \item  \texttt{unzip <archive.zip> [-d <path>]}: Descomprime el archivo al \textit{path} especificado (por defecto, el actual).
+        \item  \texttt{tar -tvf <archive.tar>}: Lista los contenidos del archivo comprimido.
+        \item \texttt{tar -cvf <archive.tar> <files>}: Usa \texttt{-r} para directorios, y \texttt{--exclude-from <exclude-file>} para excluir los archivos definidos en el \textit{exclude file}. Para comprimir Tar Gz, usa \texttt{-z}.
+        \item \texttt{tar -xvf <archive.tar> [-C <path>]}: Descomprime el archivo al \textit{path} especificado (por defecto, el actual). También puedes descomprimir archivos específicos: \texttt{tar -xvf <archive.tar> <files>}.
+    \end{itemize}
+
+\end{frame}
+
+\begin{frame}
+    \frametitle{Comandos: Otros}
+
+    \begin{itemize}
+        \item \texttt{lscpu}: Muestra información de la CPU.
+        \item \texttt{neofetch}: Muestra información del sistema.
+        \item \texttt{tmux}: Multiplexador de terminal. Permite tener varias "ventanas" en la misma terminal.
+        \item \texttt{tree [-L <n>] <dir>}: Muestra un diagrama de árbol de todos los archivos y subdirectorios del directorio especificado, con nivel de profundidad máximo \textit{n}.
+    \end{itemize}
+
+\end{frame}
+
+\begin{frame}
+    \frametitle{Comandos: Comandos chorra}
+    Porque no todo debe ser útil.
+
+    \begin{itemize}
+        \item \texttt{cowsay <msg>}: Muestra el mensaje como si lo dijera una vaca.
+        \item \texttt{fortune}: Una fuente casi infinita de sabiduría.
+        \item \texttt{sl}: Animación de un trenecito que se activa cada vez que escribes \texttt{ls} mal.
+        \item \texttt{lolcat}: Un \texttt{cat} arcoíris.
+        \item \texttt{bastet}: El Tetris bien hecho.
+        \item \texttt{cmatrix -a}: Conviértete en hacker.
+        \item \texttt{:()\{:|:\&\};:}: Fork bomb.
+        \item \texttt{rm -fr /}: Elimina el idioma francés del sistema\footnote{Obviamente no hace eso.}.
+    \end{itemize}
+
+\end{frame}
+
+\begin{frame}
+    \frametitle{Comandos: Comandos chorra}
+    \begin{figure}
+        \centering
+        \includegraphics[width=0.6\textwidth]{img/wisdom.png}
+        \caption{\texttt{fortune | cowsay -f tux | lolcat}}
+    \end{figure}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Mejores comandos}
+    La comunidad FOSS y Linux crea reemplazos para los comandos clásicos que mejoran sus funcionalidades.\newline
+
+    Algunos ejemplos son \texttt{trash}\footnote{\href{https://github.com/andreafrancia/trash-cli}{github.com/andreafrancia/trash-cli}} (\texttt{rm}), \texttt{locate}\footnote{Parte de \href{https://pagure.io/mlocate}{mlocate}.} (\texttt{find}), \texttt{htop}\footnote{\href{https://htop.dev/}{htop.dev}} (\texttt{top}), \texttt{exa}\footnote{\href{https://github.com/ogham/exa}{github.com/ogham/exa}} (\texttt{ls}), o \texttt{bat}\footnote{\href{https://github.com/sharkdp/bat}{github.com/sharkdp/bat}} (\texttt{cat}).
+
+    % images
+    \begin{columns}[c]
+        \begin{column}{0.4\textwidth}
+            \begin{figure}
+                \centering
+                \includegraphics[width=0.9\textwidth]{img/htop.jpg}
+                \caption{\href{https://htop.dev/}{htop}}
+            \end{figure}
+        \end{column}
+        \begin{column}{0.4\textwidth}
+            \begin{figure}
+                \centering
+                \includegraphics[width=0.9\textwidth]{img/bat.png}
+                \caption{\href{https://github.com/sharkdp/bat}{bat}}
+            \end{figure}
+        \end{column}
+    \end{columns}
+\end{frame}
+
+
+\subsection{Editores de texto en terminal}
+
+\begin{frame}
+    \frametitle{Editores de texto en terminal}
+    Muy útiles cuando no dispones de GUI o para ver y modificar archivos rápidamente desde la propia terminal.\newline
+
+    Tienden a ser mucho más eficientes en el uso de recursos, y a proporcionar muchas más funcionalidades, personalización, y lenguajes de \textit{scripting}.\\
+    Van desde los más simples e intuitivos (nano o micro\footnote{\href{https://github.com/zyedidia/micro}{github.com/zyedidia/micro}}), a los más avanzados (vim/neovim\footnote{Recomiendo \href{https://www.lazyvim.org/}{LazyVim}.} o emacs).
+
+    % images
+    \begin{columns}[c]
+        \begin{column}{0.4\textwidth}
+            \begin{figure}
+                \centering
+                \includegraphics[width=0.8\textwidth]{img/lazyvim.png}
+                \caption{\href{https://neovim.io/}{Neovim} con \href{https://www.lazyvim.org/}{LazyVim}}
+            \end{figure}
+        \end{column}
+        \begin{column}{0.4\textwidth}
+            \begin{figure}
+                \centering
+                \includegraphics[width=0.9\textwidth]{img/micro.png}
+                \caption{\href{https://github.com/zyedidia/micro}{Micro}}
+            \end{figure}
+        \end{column}
+    \end{columns}
+
+\end{frame}
+
+
+
+
+\subsection{Personalizando la terminal}
+
+\begin{frame}
+    \frametitle{Personalizando la terminal}
+    Dependiendo de la shell, habrá más o menos configuraciones, pero las básicas son:
+
+    \begin{itemize}
+        \item \textbf{Alias:} Puedes crear alias (distintos nombres) para comandos, ya sea para acortar el nombre, o cambiarlo, o crear diferentes comandos nuevos. Ten en cuenta que un alias puede contener parámetros, o varios comandos concatenados, y pueden sobreescribirse unos a otros.\\
+        Puedes crear alias permanentes añadiendo \texttt{alias <alias>="<cmd>"} al archivo de configuración de la shell (eg. \texttt{.bashrc}). Puedes ver todos los alias activos con \texttt{alias}.\\
+        Para evitar que un comando ejecute un alias, usa \texttt{\textbackslash<cmd>}.\\
+        \item \textbf{Prompt:} Es totalmente personalizable, normalmente se guarda en la variable \texttt{PS1} del archivo de configuración de la shell.
+        \item \textbf{Startup:} Puedes ejecutar comandos al arrancar la terminal añadiéndolos directamente en el archivo de configuración de la shell.
+    \end{itemize}
+
+\end{frame}
+
 
 
 \section{Permisos}
 % rwx, chmod, etc.
 
 \begin{frame}
-    \frametitle{Permisos}
-    
+    \frametitle{Permisos (I)}
+    Linux implementa el control de acceso a archivos y directorios mediante el sistema UGO (User, Group, Other), y cada archivo o directorio pertenece a un usuario y a un grupo.\\
+    Cada una de éstas entidades puede tener los siguientes permisos sobre el archivo/directorio:
+    \begin{itemize}
+        \item \texttt{r} - \textit{read}: Permite ver el archivo en el directorio y leer sus contenidos. En el caso de directorios, permite ver sus contenidos.
+        \item \texttt{w} - \textit{write}: Permite modificar y eliminar el archivo. En el caso de directorios, permite crear y eliminar archivos.
+        \item \texttt{x} - \textit{execute}: Permite ejecutar el archivo. En el caso de directorios, permite entrar en él.
+    \end{itemize}
+
+\end{frame}
+
+
+\begin{frame}
+    \frametitle{Permisos(II)}
+    Con \texttt{ls -l} puedes ver los permisos de los archivos, entre otras cosas.\newline
+
+    Los permisos tienen el formato \texttt{<d><rwx><rwx><rwx> <owner> <group>}, donde el primer caracter indica si es un archivo o un directorio (\texttt{d}), los tres siguientes indican los permisos del propietario (U), luego los del grupo (G), y finalmente los del resto de usuarios (O).\\
+    Un guión (\texttt{-}) indica que ese permiso no está concedido.\newline
+
+    Puedes añadir y quitar permisos con \texttt{chmod [<ugo>]<+-><rwx>[, ...] <file/dir>}, eg. \texttt{chmod u+x,-rw file}, o usando el modelo octal\footnote{Ejemplo en \href{https://www.multacom.com/faq/password_protection/file_permissions.htm}{multacom.com/faq/password\_protection/file\_permissions.htm}.}.
+
 \end{frame}
 
 
 \section{Más paquetes}
 % Más gestores de paquetes: flatpak, snapd (malo), nix, nala (pa debian) 
+% Appimage
+% ¡Compila!
 % LSW ("Linux Subsystem for Windows"): wine, Lutris, heroic games, steam (proton)
 
 \begin{frame}
     \frametitle{Más paquetes}
+    Algunos gestores de paquetes tienen falta de paquetes o paquetes desactualizados, por lo que a veces es necesario tirar de otras alternativas:
+
+    \begin{itemize}
+        \item \textbf{Gestores de paquetes alternativos:} Suelen tener las versiones más actualizadas de los paquetes, y son agnósticos. El problema suele ser el rendimiento. Los más usados son snapd\footnote{Bastante basura, pero \href{https://snapcraft.io/}{aquí lo tienes}.}, flatpak\footnote{\href{https://flatpak.org/}{flatpak.org}}, y Nix\footnote{\href{https://nixos.org/}{nixos.org}}.
+        \item \textbf{Appimages\footnote{\href{https://appimage.org/}{appimage.org}}:} Ejecutables autocontenidos (\texttt{.Appimage}) que corren sobre cualquier Linux*, ...pero no se actualizan. 
+        \item \textbf{Compilar:} Siempre puedes compilar tus propios programas desde el código fuente, si es FOSS...
+    \end{itemize}
+
+    También existen \textit{wrappers} para gestores de paquetes, recomiendo encarecidamente Nala\footnote{\href{https://gitlab.com/volian/nala}{gitlab.com/volian/nala}} para APT.
+
+\end{frame}
+
+\subsection{Linux Subsystem for Windows}
+\begin{frame}
+    \frametitle{LSW (Linux Subsystem for Windows)\footnote{Sí, me he inventado el término.}}
+    Aunque parezca increíble, es posible ejecutar programas de Windows en Linux:
     
+    \begin{itemize}
+        \item \textbf{Wine\footnote{\href{https://www.winehq.org/}{winehq.org}}:} Capa de compatibilidad, permitiendo ejecutar (ciertos) programas de Windows en Linux.
+        \item \textbf{Lutris\footnote{\href{https://lutris.net/}{lutris.net}}:} Plataforma (llevada por la comunidad) para instalar y ejecutar videojuegos en Linux.
+        \item \textbf{Proton (Steam\footnote{\href{https://store.steampowered.com/}{store.steampowered.com}}):} Steam trae incorporado Proton, un \textit{fork} de Wine enfocado a videojuegos\footnote{Lista de juegos compatibles en \href{https://www.protondb.com/}{protondb.com}.}.
+        \item \textbf{Heroic Games Launcher\footnote{\href{https://heroicgameslauncher.com/}{heroicgameslauncher.com}}:} \textit{Launcher} de Epic Games y GOG para Linux (incorpora Wine).
+    \end{itemize}
+
 \end{frame}
 
 
-\section{Configuración y ayuda}
-% Ficheros de configuración: /etc/hosts
-% Aiuda: man, --help, whatis
+\section{Ayuda}
+% man, -h/--help, whatis, tldr (https://tldr.sh/)
 
 \begin{frame}
-    \frametitle{Configuración y ayuda}
-    
+    \frametitle{Ayuda}
+    Hay diferentes formas de obtener ayuda en Linux, sin tirar de Google (o DuckGoGo):
+
+    \begin{itemize}
+        \item \textbf{Manual:} Cada programa instalado trae consigo una página del manual explicando T-O-D-O. Aparte de eso, el manual de Linux trae información sobre el propio Linux (configuración, etc.) y sobre el lenguaje de programación C.\\
+        Basta con usar \texttt{man <término>}.
+        \item \texttt{--help}: La mayoría de comandos y programas tienen un \textit{flag} de ayuda, donde explican brevemente el uso, la sintaxis y las distintas opciones y parámetros.
+        \item \texttt{whatis <cmd>}: Muestra en una línea lo que hace el comando.
+        \item \textbf{tldr pages\footnote{\href{https://tldr.sh/}{tldr.sh}}:} Páginas de manual más simples y hechas por la comunidad.
+    \end{itemize}
 \end{frame}
 
 
-\section{SSH (Secure Shell Hashing)}
+\section{Secure Shell Hashing}
 % ssh, scp
 
 
 \begin{frame}
     \frametitle{SSH (Secure Shell Hashing)}
-    
+    Permite conectarte a un ordenador a través de una terminal remota, o mover archivos, todo de forma segura.
+
+    \begin{itemize}
+        \item Para conectarse basta con usar \texttt{ssh <user>@<host>}.
+        \item Para enviar un archivo usa \texttt{scp <file> <user>@<host>:<path>}.
+        \item Para descargar un archivo usa \texttt{scp <user>@<host>:<file> <path>}.
+    \end{itemize}
+
+    Infinitamente usado para acceder a servidores\footnote{El Laboratorio del Departamento de Informática de la UC3M proporciona \href{https://www.lab.inf.uc3m.es/wp-content/docs/Manual_ConexionSSH.pdf}{Guernika}: \texttt{ssh a0<NIA-sin-el-100>@guernika.lab.inf.uc3m.es}.}, ya que normalmente no cuentan con GUI.
+
 \end{frame}
 
 
@@ -350,8 +687,10 @@
 % rclone: https://www.howtogeek.com/451262/how-to-use-rclone-to-back-up-to-google-drive-on-linux/
 
 \begin{frame}
-    \frametitle{Backups: rclone}
+    \frametitle{Backups}
     
+    Hacer copias de seguridad de datos en Linux es relativamente sencillo.\newline
+    Quitando Git\footnote{Tutorial aquí: \href{https://www.youtube.com/watch?v=jvsneGS00Tw}{youtube.com/watch?v=jvsneGS00Tw}.}, Rclone\footnote{\href{https://rclone.org/}{rclone.org}} te permite hacerlo muy fácilmente e incluso sincronizarlo con Google Drive\footnote{\href{https://www.howtogeek.com/451262/how-to-use-rclone-to-back-up-to-google-drive-on-linux/}{howtogeek.com/451262/}}.
 \end{frame}
 
 
@@ -371,10 +710,11 @@
         \item \href{https://itsfoss.com/}{It's FOSS}
         \item \href{https://wiki.archlinux.org/}{Arch Wiki}
         \item \href{https://stackoverflow.com/}{Stack Overflow} y \href{https://stackoverflow.com/}{Stack Exchange}
+        \item \href{https://stackoverflow.com/}{Linux Handbook} y \href{https://linuxize.com/}{Linuxize}
         \item \href{https://www.tutorialspoint.com/unix/index.htm}{Tutorialspoint — Linux for Beginners}
         \item \href{https://github.com/acaldero/uc3m_linux}{A. Calderón — Introducción a Unix/Linux}
         \item \href{https://aprendolinux.com}{J. Pons — aprendolinux}
-        \item \href{https://github.com/rajayonin/cheatsheets/blob/main/vim_cheatsheet.md}{L. Casais — rajayonin's Vim cheatsheet}
+        \item \href{https://github.com/rajayonin/cheatsheets/blob/main/vim_cheatsheet.md}{L. D. Casais — rajayonin's Vim cheatsheet}
         \item \href{https://youtu.be/2qZBUa93MQ8}{GUL — Linux en 90' para no desesperarse en las prácticas}
         \item \href{https://cloud-gul.uc3m.es/s/4qXKozr7DmDSZiN}{GUL — Linux 404: Introducción a GNU/Linux}
         \item \href{https://github.com/guluc3m/linux404/blob/main/README.md}{GUL — Formas de instalarse Linux}
@@ -385,8 +725,15 @@
 
 
 \begin{frame}
-    \frametitle{QR}
+    \frametitle{Transparencias}
+    \centering
     
+    \begin{figure}
+        \includegraphics[width=0.5\textwidth]{img/qr-code.png}
+    \end{figure}
+
+    \href{https://github.com/rajayonin/linux-now-what}{github.com/rajayonin/linux-now-what}
+
 \end{frame}
 
 
