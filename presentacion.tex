@@ -51,6 +51,19 @@
 % -----------------------------
 
 
+\begin{frame}
+    \frametitle{Transparencias}
+    \centering
+    
+    \begin{figure}
+        \includegraphics[width=0.5\textwidth]{img/qr-code.png}
+    \end{figure}
+
+    \href{https://github.com/rajayonin/linux-now-what}{github.com/rajayonin/linux-now-what}
+
+\end{frame}
+
+
 \section{Personalización}
 % Desktop Enviroments / tiling window managers (i3) / tty
 % Emuladores de terminal: kitty (bonito y simple, usa GPU), terminator (GUI friendly), alarcritty (moderno, usa GPU), iterm2 // tmux
@@ -60,7 +73,7 @@
 
 \begin{frame}
     \frametitle{GUI (Graphical User Interface)}
-    Por defecto, Linux cuenta con tres tipos principales de GUI: \textbf{Lockscreen} (pantalla de bloqueo), \textbf{Desktop Enviroment}, y \textbf{TTY/shell}.\newline
+    Por defecto, Linux cuenta con tres tipos principales de interfaces: dos gráficas, \textbf{Lockscreen} (pantalla de bloqueo) y \textbf{Desktop Enviroment}; y una de texto, la \textbf{TTY/shell}.\newline
 
     Se puede acceder a cualquiera de ellos con las siguientes combinaciones de teclas:
     \begin{itemize}
@@ -78,7 +91,7 @@
 
 \begin{frame}
     \frametitle{Desktop Enviroments}
-    Es la principal forma de interacción con el ordenador.\\
+    Es la principal forma (moderna) de interacción con el ordenador.\\
     Todo lo que puedes ver y tocar (iconos, ventanas, \textit{toolbars}, \textit{wallpapers}, etc.) es parte del Desktop Enviroment.\newline
 
     Son todos intercambiables y, aunque la forma de hacerlo depende de la \textit{distro} específica, normalmente se pueden cambiar en la \textit{lockscreen}.\\
@@ -154,7 +167,7 @@
 \begin{frame}
     \frametitle{Shells}
     Existen distintos programas de terminal, con distintas funcionalidades (configuración, autocompletado, plugins, etc.).\\
-    Son extremadamente fáciles de intercambiar (\href{https://man7.org/linux/man-pages/man1/chsh.1.html}{\texttt{chsh}}), y aún más rápido de arrancar una u otra (son programas: e.g. \href{https://www.man7.org/linux/man-pages/man1/bash.1.html}{\texttt{bash}}). 
+    Son extremadamente fáciles de intercambiar (\href{https://man7.org/linux/man-pages/man1/chsh.1.html}{\texttt{chsh}}), y aún más rápido de arrancar una u otra (son programas: eg. \href{https://www.man7.org/linux/man-pages/man1/bash.1.html}{\texttt{bash}}). 
 
     % images
     \begin{columns}[c]
@@ -219,31 +232,27 @@
     La principal funcionalidad de la shell/TTY/terminal es ejecutar programas.\\
     Los programas más genéricos y usados para interactuar con el SO se suelen llamar "comandos".\newline
 
-    Por defecto busca los programas en \texttt{/usr/bin/}, pero también puedes especificar el archivo con su \textit{path} (recuerda que el archivo tiene que ser ejecutable).\newline
+    Por defecto busca los programas en \texttt{/usr/bin/}, pero también puedes especificar el archivo con su \textit{path}\footnote{El archivo tiene que ser ejecutable.}.\newline
 
-    Suele consistir de un \textit{prompt}, que indica el estado, y un cursor para escribir los comandos (ejecutados con el \texttt{Enter}). El prompt suele tener el formato \texttt{<user>@<host>:<cwd><\$ || \#>}, consistente del nombre del usuario, el nombre de la máquina (\textit{host}), el directorio actual (\textit{Current Working Directory}), y un caracter indicando el modo: \texttt{\$} para usuario y \texttt{\#} para superusuario.
+    Suele consistir de un \textit{prompt}, que indica el estado, y un cursor para escribir los comandos (ejecutados con el \texttt{Enter}).\\
+    El prompt suele tener el formato \texttt{<user>@<host>:<cwd><\$\#>}, consistente del nombre del usuario, el nombre de la máquina (\textit{host}), el directorio actual (\textit{Current Working Directory}), y un caracter indicando el modo: \texttt{\$} para usuario y \texttt{\#} para superusuario.
 
 \end{frame}
 
 
-\begin{frame}[fragile]  % [fragile] needed for verbatim
+\begin{frame}
     \frametitle{Sintaxis general}
-
+    
     La sintaxis general de cualquier comando es:\\
-
-    \begin{block}{}  % verbatim doesn't respect tabulation
-        \begin{verbatim}
-<cmd> [-<f>] [--<flag>] [<parameter>] [<argument>]
-        \end{verbatim}
-    \end{block}
+    \texttt{<cmd> [-<f>] [--<flag>] [<parameters>] [<arguments>]}\\
+    Eg.: \texttt{tar -rvf ../stuff.tar --exclude-from exclude\_file .}
 
     \begin{itemize}
-        \item \textbf{Flags:} Son opciones del comando. Dependiendo de la opción pueden implicar la presencia de un parámetro. Pueden ser escritas con una letra (\texttt{-<f>}) o una palabra (\texttt{--<flag>}), normalmente equivalentes (e.g: \texttt{-h} y \texttt{--help}). Normalmente puedes juntar varios flags de una letra: \texttt{-<f><g><h>}.
+        \item \textbf{Flags:} Son opciones del comando. Dependiendo de la opción pueden implicar la presencia de un parámetro. Pueden ser escritas con una letra (\texttt{-<f>}) o una palabra (\texttt{--<flag>}), normalmente equivalentes (e.g: \texttt{-h} y \texttt{--help}). Normalmente puedes juntar varios \textit{flags} de una letra: \texttt{-<f><g><h>}.
         \item \textbf{Parámetros:} Expanden las opciones del comando.
         \item \textbf{Argumentos:} Los \textit{inputs} del comando. Suelen ser archivos.
     \end{itemize}
     
-    E.g.: \texttt{tar -rvf ../stuff.tar --exclude-from exclude\_file .}
 
 \end{frame}
 
@@ -258,12 +267,13 @@
         \item \textbf{Concatenaciones:} Sirven para concatenar comandos:\\
         \texttt{<cmd1> <cc> <cmd2>}\\
         \begin{itemize}
-            \item \texttt{;} ejecuta \textbf{siempre} el segundo comando cuando termina el primero.
-            \item \texttt{\&\&} ejecuta el segundo comando sólo \textbf{si el primero ha funcionado} (retorna \texttt{0}).
-            \item \texttt{||} ejecuta el segundo sólo \textbf{si el primero ha fallado}.
+            \item \texttt{;} ejecuta \textbf{siempre} el segundo comando cuando termina el primero (THEN).
+            \item \texttt{\&\&} ejecuta el segundo comando sólo \textbf{si el primero ha funcionado} (retorna \texttt{0}) (AND).
+            \item \texttt{||} ejecuta el segundo sólo \textbf{si el primero ha fallado} (OR).
         \end{itemize}
         % E.g.: \texttt{sudo apt update \&\& apt upgrade}
-        \item \textbf{Pipes:} Conectan la salida de un comando (\texttt{stdout}) a la entrada (\texttt{stdin}) del siguiente comando. Útil para enlazar comandos: \texttt{<cmd1> | <cmd2>}\\
+        \item \textbf{Pipes:} Conectan la salida de un comando (\texttt{stdout}) a la entrada (\texttt{stdin}) del siguiente comando. \\
+        Útil para enlazar comandos: \texttt{<cmd1> | <cmd2>}
         % Mítico ejemplo, buscar algo en un directorio: \texttt{ls | grep "algo"}.
         \item \textbf{Redirecciones:} Redirigen la entrada ó salida de un comando a un archivo: \texttt{<cmd> <rr> <file>}.
         \begin{itemize}
@@ -286,9 +296,9 @@
         \item \textbf{Copiar y pegar:} Se usan \texttt{Ctrl-Shift-C} y \texttt{Ctrl-Shift-V}.
         \item \textbf{Cancelar comandos:} Cancela el comando que estás ejecutando actualmente con \texttt{Ctrl-C}.
         \item \textbf{Cerrar sesión:} Cierra la sesión de terminal actual con \texttt{Ctrl-D} (útil para SSH).
-        \item \textbf{Limpiar pantalla:} Limpia la pantalla con \texttt{Ctrl-L}, ó \texttt{clear}.
-        \item \textbf{Borrar línea:} Borra todo el comando que estás escribiendo con \texttt{Ctrl-U}.
-        \item \textbf{Autocompletado:} Con el \texttt{Tab}. Si hay más de una opción posible, (normalmente, depende de la shell) tienes que darle dos veces.
+        \item \textbf{Limpiar pantalla:} Con \texttt{Ctrl-L}, ó \texttt{clear}.
+        \item \textbf{Borrar línea:} Borra el comando que estás escribiendo con \texttt{Ctrl-U}.
+        \item \textbf{Autocompletado:} Con el \texttt{Tab}. Si hay más de una opción posible, tienes que darle dos veces\footnote{Como norma general, aunque depende de la shell.}.
     \end{itemize}
 
 \end{frame}
@@ -296,7 +306,9 @@
 \begin{frame}
     \frametitle{Funcionalidades de la terminal (III)}
     
-    La mayoría de shells cuentan con un historial de comandos, normalmente guardado en \texttt{/home/<user>/.<shell>\_history} (eg. \texttt{.bash\_history}). Viene con un tamaño máximo definido en la configuración de la shell, y se guarda entre sesiones del mismo usuario.
+    La mayoría de shells cuentan con un historial de comandos, normalmente guardado en \texttt{/home/<user>/.<shell>\_history} (eg. \texttt{.bash\_history})\footnote{También puedes ver el historial con \texttt{history}.}.\newline
+    
+    Viene con un tamaño máximo definido en la configuración de la shell, y se guarda entre sesiones del mismo usuario.
     \begin{itemize}
         \item Puedes navegar el historial con las flechas del teclado (arriba y abajo).
         \item Con \texttt{Ctrl-R} puedes hacer una búsqueda dentro historial. Sigue pulsando \texttt{Ctrl-R} para seguir buscando hacia atrás, y pulsa \texttt{Esc} para salir.
@@ -321,7 +333,7 @@
     Ambos retornarán un número de proceso en background, e.g \texttt{[1]}.
     
     \begin{itemize}
-        \item Para traer al \textit{foreground} el proceso \textit{n} basta con usar \texttt{\%<n>}\footnote{Equivalente a \texttt{fg <n>}.}. Para el último proceso, basta con usar \texttt{\%}.
+        \item Para traer al \textit{foreground} el proceso \textit{n}\footnote{Procesos tanto en \textit{background} como en suspensión.} basta con usar \texttt{\%<n>}\footnote{Equivalente a \texttt{fg <n>}.}. Para el último proceso, basta con usar \texttt{\%}.
         \item Para evitar que un proceso termine cuando se cierra la sesión, usa \texttt{nohup <cmd>} (recomendable usar junto con \texttt{\&}).
         \item Puedes programar la ejecución de un comando (o shell script) con \texttt{at <time> <cmd>}.
     \end{itemize}
@@ -356,11 +368,11 @@
 
     \begin{itemize}
         \item \texttt{ls}: Muestra los contenidos del directorio (\texttt{-lah} para mostrar toda la info).
-        \item \texttt{cd dir}: Moverse al directorio \texttt{dir}.
-        \item \texttt{mv origin destination}: Mover archivo \texttt{origin} al \textit{path} \texttt{destination} (\texttt{-r} para carpetas).
-        \item \texttt{cp origin destination}: Mover archivo \texttt{origin} al \textit{path} \texttt{destination} (\texttt{-r} para carpetas).
-        \item \texttt{rm file}: Eliminar el archivo \texttt{file} (\texttt{-r} para carpetas).
-        \item \texttt{mkdir dir}: Crea el directorio \texttt{dir}.
+        \item \texttt{cd <dir>}: Moverse al directorio \texttt{dir}.
+        \item \texttt{mv <origin> <destination>}: Mover archivo \texttt{origin} al \textit{path} \texttt{destination} (\texttt{-r} para carpetas).
+        \item \texttt{cp <origin> <destination>}: Mover archivo \texttt{origin} al \textit{path} \texttt{destination} (\texttt{-r} para carpetas).
+        \item \texttt{rm <file>}: Eliminar el archivo \texttt{file} (\texttt{-r} para carpetas).
+        \item \texttt{mkdir <dir>}: Crea el directorio \texttt{dir}.
     \end{itemize}
 \end{frame}
 
@@ -372,8 +384,9 @@
         \item \texttt{echo <msg>}: Imprime texto por pantalla.
         \item \texttt{find <dir> -iname <file>}: Busca archivos en un directorio (y subdirectorios).
         \item \texttt{which <cmd>}\footnote{\texttt{whereis} da más información, pero es más lento.}: Busca el \textit{path} donde está guardado un ejecutable.
-        \item \texttt{script}: \textit{Loggea} la terminal y la guarda a un archivo (usa \texttt{exit} para parar.).
-        \item \texttt{df -h}\footnote{\texttt{du -h <dir>} hace lo mismo para un directorio específico.}: Muestra información del espacio usado en disco.
+        \item \texttt{script}: \textit{Loggea} la terminal y lo guarda en un archivo (usa \texttt{exit} para parar).
+        \item \texttt{df -h}: Muestra información del espacio usado en disco.
+        \item \texttt{du -h <dir>}: Muestra información del espacio usado en un directorio (y subdirectorios).
         \item \texttt{cksum <file>}: Calcula el \textit{checksum} de un archivo.
         \item \texttt{grep <str> <file>}: Busca patrones en archivos. También útil con \textit{pipes} para buscar en \textit{outputs} de comandos: \texttt{<cmd> | grep <str>}.
     \end{itemize}
@@ -399,13 +412,13 @@
     \frametitle{Comandos: Trabajando con archivos (II)}
 
     \begin{itemize}
-        \item \texttt{tac <file>}\footnote{"tac" es "cat" al revés.}: Da la vuelta a un archivo (línea a línea) y lo saca por pantalla (\texttt{rev} para byte a byte).
-        \item \texttt{diff <file1> <file2>}\footnote{\texttt{comm} es similar pero más flexible.}: Muestra las diferencias entre dos archivos.
-        \item \texttt{cmp <file1> <file2>}: Compara dos archivos byte a byte.
+        \item \texttt{tac\footnote{"tac" es "cat" al revés.} <file>}: Da la vuelta a un archivo (línea a línea) y lo saca por pantalla (\texttt{rev} para byte a byte).
+        \item \texttt{diff\footnote{\texttt{comm} es similar pero más flexible.} <file1> <file2>}: Muestra las diferencias entre dos archivos.
+        \item \texttt{cmp <file1> <file2>}: Comprueba si dos archivos son iguales.
         \item \texttt{cut -c <n>- <file>}: Corta los \textit{n} primeros caracteres de cada línea (\texttt{-<n>} para los \textit{n} últimos).
         \item \texttt{expand <file>}: Convierte \textit{tabs} a espacios.
         \item \texttt{unexpand <file>}: Convierte espacios a \textit{tabs}.
-        \item \texttt{sed}/\texttt{awk}: Permiten editar archivos desde comandos. Muy poderosos (especialmente \texttt{awk}).
+        \item \texttt{sed}/\texttt{awk}: Permiten editar archivos desde comandos. Muy poderosos para \textit{scripting} (especialmente \texttt{awk}).
         \item \texttt{jq}/\texttt{yq}/\texttt{xmlint}: Similares a \texttt{sed}, pero para formatos específicos: JSON, yaml, XML...
     \end{itemize}
 \end{frame}
@@ -417,7 +430,7 @@
     \begin{itemize}
         \item \texttt{ps}: Muestra los procesos activos.
         \item \texttt{top}\footnote{El Administrador de tareas de terminal.}: Muestra información de procesos y recursos en tiempo real.
-        \item \texttt{service <service>\footnote{Los servicios son los scripts que están en \texttt{/etc/init.d}.} stop}: Para un servicio en ejecución. También puedes ver su estado (\texttt{status}) o reiniciarlo (\texttt{restart}).
+        \item \texttt{service <service>\footnote{Los servicios son los scripts que están en \texttt{/etc/init.d/}.} stop}: Para un servicio en ejecución. También puedes ver su estado (\texttt{status}) o reiniciarlo (\texttt{restart}).
         \item \texttt{kill <pid>}: Mata a un proceso dado su PID (Process ID) (\texttt{-9} para forzar la muerte).
         \item \texttt{killall <name>}: Mata todos los procesos asociados a un nombre.
     \end{itemize}
@@ -435,7 +448,7 @@
     \frametitle{Comandos: Network}
 
     \begin{itemize}
-        \item \texttt{ping <dir>}: Hace \textit{pings} contínuos a la dirección indicada\footnote{Puedes especificar la dirección IP (eg. \texttt{8.8.8.8}) o un \textit{hostname} (eg. \texttt{google.com}).}.
+        \item \texttt{ping <dir>\footnote{Puedes especificar la dirección IP (eg. \texttt{8.8.8.8}) o un \textit{hostname} (eg. \texttt{google.com}).}}: Hace \textit{pings} contínuos a la dirección indicada.
         \item \texttt{traceroute <dir>}: Muestra la ruta hasta la dirección indicada.
         \item \texttt{wget <dir>}: Obtiene los archivos de una dirección web (HTTP/HTTPS y FTP).
         \item \texttt{curl}: Herramienta que permite enviar y recibir \textit{requests}, archivos, etc. Soporta muchos protocolos.
@@ -474,8 +487,8 @@
 
     \begin{itemize}
         \item \texttt{lscpu}: Muestra información de la CPU.
-        \item \texttt{neofetch}: Muestra información del sistema.
-        \item \texttt{tmux}: Multiplexador de terminal. Permite tener varias "ventanas" en la misma terminal.
+        \item \texttt{neofetch\footnote{\href{https://github.com/dylanaraps/neofetch}{github.com/dylanaraps/neofetch}}}: Muestra información del sistema.
+        \item \texttt{tmux\footnote{\href{https://github.com/tmux/tmux}{github.com/tmux/tmux}}}: Multiplexador de terminal. Permite tener varias "ventanas" en la misma terminal.
         \item \texttt{tree [-L <n>] <dir>}: Muestra un diagrama de árbol de todos los archivos y subdirectorios del directorio especificado, con nivel de profundidad máximo \textit{n}.
     \end{itemize}
 
@@ -547,15 +560,15 @@
         \begin{column}{0.4\textwidth}
             \begin{figure}
                 \centering
-                \includegraphics[width=0.8\textwidth]{img/lazyvim.png}
-                \caption{\href{https://neovim.io/}{Neovim} con \href{https://www.lazyvim.org/}{LazyVim}}
+                \includegraphics[width=0.9\textwidth]{img/micro.png}
+                \caption{\href{https://github.com/zyedidia/micro}{Micro}}
             \end{figure}
         \end{column}
         \begin{column}{0.4\textwidth}
             \begin{figure}
                 \centering
-                \includegraphics[width=0.9\textwidth]{img/micro.png}
-                \caption{\href{https://github.com/zyedidia/micro}{Micro}}
+                \includegraphics[width=0.8\textwidth]{img/lazyvim.png}
+                \caption{\href{https://neovim.io/}{Neovim} con \href{https://www.lazyvim.org/}{LazyVim}}
             \end{figure}
         \end{column}
     \end{columns}
@@ -619,15 +632,15 @@
 
 \begin{frame}
     \frametitle{Más paquetes}
-    Algunos gestores de paquetes tienen falta de paquetes o paquetes desactualizados, por lo que a veces es necesario tirar de otras alternativas:
+    Algunos gestores de paquetes tienen falta de paquetes o paquetes desactualizados, por lo que a veces es necesario usar alternativas:
 
     \begin{itemize}
-        \item \textbf{Gestores de paquetes alternativos:} Suelen tener las versiones más actualizadas de los paquetes, y son agnósticos. El problema suele ser el rendimiento. Los más usados son snapd\footnote{Bastante basura, pero \href{https://snapcraft.io/}{aquí lo tienes}.}, flatpak\footnote{\href{https://flatpak.org/}{flatpak.org}}, y Nix\footnote{\href{https://nixos.org/}{nixos.org}}.
+        \item \textbf{Gestores de paquetes alternativos:} Suelen tener las versiones más actualizadas de los paquetes, y son agnósticos. El problema suele ser el rendimiento. Los más usados son snapd\footnote{Bastante basura, pero aquí lo tienes: \href{https://snapcraft.io/}{snapcraft.io}.}, flatpak\footnote{\href{https://flatpak.org/}{flatpak.org}}, y Nix\footnote{\href{https://nixos.org/}{nixos.org}}.
         \item \textbf{Appimages\footnote{\href{https://appimage.org/}{appimage.org}}:} Ejecutables autocontenidos (\texttt{.Appimage}) que corren sobre cualquier Linux*, ...pero no se actualizan. 
         \item \textbf{Compilar:} Siempre puedes compilar tus propios programas desde el código fuente, si es FOSS...
     \end{itemize}
 
-    También existen \textit{wrappers} para gestores de paquetes, recomiendo encarecidamente Nala\footnote{\href{https://gitlab.com/volian/nala}{gitlab.com/volian/nala}} para APT.
+    También existen \textit{wrappers} (interfaces) para gestores de paquetes, recomiendo encarecidamente Nala\footnote{\href{https://gitlab.com/volian/nala}{gitlab.com/volian/nala}} para APT.
 
 \end{frame}
 
@@ -651,7 +664,7 @@
 
 \begin{frame}
     \frametitle{Ayuda}
-    Hay diferentes formas de obtener ayuda en Linux, sin tirar de Google (o DuckGoGo):
+    Hay diferentes formas de obtener ayuda en Linux, sin tirar de Google (o DuckDuckGo):
 
     \begin{itemize}
         \item \textbf{Manual:} Cada programa instalado trae consigo una página del manual explicando T-O-D-O. Aparte de eso, el manual de Linux trae información sobre el propio Linux (configuración, etc.) y sobre el lenguaje de programación C.\\
@@ -690,7 +703,14 @@
     \frametitle{Backups}
     
     Hacer copias de seguridad de datos en Linux es relativamente sencillo.\newline
-    Quitando Git\footnote{Tutorial aquí: \href{https://www.youtube.com/watch?v=jvsneGS00Tw}{youtube.com/watch?v=jvsneGS00Tw}.}, Rclone\footnote{\href{https://rclone.org/}{rclone.org}} te permite hacerlo muy fácilmente e incluso sincronizarlo con Google Drive\footnote{\href{https://www.howtogeek.com/451262/how-to-use-rclone-to-back-up-to-google-drive-on-linux/}{howtogeek.com/451262/}}.
+
+    Quitando Git\footnote{Tutorial aquí: \href{https://www.youtube.com/watch?v=jvsneGS00Tw}{youtube.com/watch?v=jvsneGS00Tw}.}, Rclone\footnote{\href{https://rclone.org/}{rclone.org}} te permite hacerlo muy fácilmente e incluso sincronizarlo con Google Drive\footnote{\href{https://www.howtogeek.com/451262/how-to-use-rclone-to-back-up-to-google-drive-on-linux/}{howtogeek.com/451262}}.
+
+    \begin{figure}
+        \centering
+        \includegraphics[width=0.5\textwidth]{img/rclone.png}
+        \caption{\href{https://rclone.org/}{Rclone}}
+    \end{figure}
 \end{frame}
 
 
